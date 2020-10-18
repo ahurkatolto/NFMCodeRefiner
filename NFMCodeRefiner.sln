@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFMCodeRefiner", "NFMCodeRefiner\NFMCodeRefiner.csproj", "{14CECC86-2D31-480A-B0CE-654B0CB627C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14CECC86-2D31-480A-B0CE-654B0CB627C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14CECC86-2D31-480A-B0CE-654B0CB627C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14CECC86-2D31-480A-B0CE-654B0CB627C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14CECC86-2D31-480A-B0CE-654B0CB627C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA5456A4-B8FF-4E55-84AB-16C34DAC9560}
+	EndGlobalSection
+EndGlobal
