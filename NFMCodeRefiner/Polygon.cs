@@ -6,55 +6,28 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace NFMCodeRefiner {
-    // each polygon's code structure   example: <p> c(R,G,B) p(x,y,z) p(x,y,z) p(x,y,z) ... p(x,y,z) </p>
-    class Polygon {
-        public Color PolyColor { get; set; } // color of the poly: R,G,B (if non-defined in the code, RGB(0,0,0) black in-game)
-        public List<int[]> PolyPoints { get; set; } // list of the polygon's points (each point: [x,y,z])   example: p(-119,-78,388)
-        public bool GrBool { get; set; } // does the poly contain gr()?
-        public int Gr { get; set; } // gr() - defines grounding (takes integer arguements)                  example: gr(100)
-        public bool FsBool { get; set; } // does the poly contain fs()?
-        public int Fs { get; set; } // fs() - defines face shading (takes integer arguements)               example: fs(10)
-        public bool NoOutline { get; set; } // noOutline() - hides polygon outline (takes no arguments)
-
+    class Polygon {                                  // each polygon's code structure                           example: <p> p(-42,19,-13) p(-48,23,-11) p(-48,26,47) p(-45,23,43) </p>
+        public Color Color { get; set; }             // color of the poly: R,G,B (RGB(0,0,0) in-game default)   example: c(166,208,248)
+        public List<int[]> PolyPoints { get; set; }  // list of the polygon's points (each point: [x,y,z])      example: p(-119,-78,388)
+        public bool HasGr { get; set; }
+        public int Gr { get; set; }                  // defines grounding (takes integer arguements)            example: gr(100)
+        public bool HasFs { get; set; }
+        public int Fs { get; set; }                  // defines face shading (takes integer arguements)         example: fs(10)
+        public bool NoOutline { get; set; }          // hides polygon outline (takes no arguments)              example: noOutline()
+        
         public Polygon(List<string> rows) {
-            // predefine values
-            GrBool = false;
-            FsBool = false;
-            NoOutline = false;
-            Gr = 0;
-            Fs = 0;
-            PolyColor = Color.FromArgb(0,0,0);
-            // set variable to merge them later with the properties
-            List<int[]> polypoints = new List<int[]>();
-            // scan each line within the <p></p> tags sent by Car.cs
-            foreach(string line in rows) {
-                // if it's a color line, set the color
-                if(line.StartsWith("c(")) {
-                    string[] RGBColors = line.Split('(',')')[1].Split(',');
-                    PolyColor = Color.FromArgb( Int32.Parse(RGBColors[0]), Int32.Parse(RGBColors[1]), Int32.Parse(RGBColors[2]) );
-                }
-                // if not, check if it's a point of the polygon
-                else if(line.StartsWith("p(")) {
-                    string[] pointCoordinates = line.Split('(',')')[1].Split(',');
-                    polypoints.Add( new int[] { Int32.Parse(pointCoordinates[0]), Int32.Parse(pointCoordinates[1]), Int32.Parse(pointCoordinates[2]) } );
-                }
-                // if still not, check if it's an fs() value
-                else if (line.StartsWith("fs(")) {
-                    Fs = Int32.Parse(line.Split('(',')')[1]);
-                    FsBool = true;
-                }
-                // if still not, check if it's a gr() value
-                else if (line.StartsWith("gr(")) {
-                    Gr = Int32.Parse(line.Split('(',')')[1]);
-                    GrBool = true;
-                }
-                // if still not, check if it's a noOutline() statement
-                else if(line.StartsWith("noOutline()")) {
-                    NoOutline = true;
-                }
-                // if the line was none of these, skip it
-            }
-            PolyPoints = polypoints;
+            HasGr = rows.Where(s => s.StartsWith("gr(")).Count() > 0;
+            Gr = HasGr ? int.Parse( rows.Where(s => s.StartsWith("gr(")).First().Split('(',')')[1] ) : 0;
+
+            HasFs = rows.Where(s => s.StartsWith("fs(")).Count() > 0;
+            Fs = HasFs ? int.Parse( rows.Where(s => s.StartsWith("fs(")).First().Split('(',')')[1] ) : 0;
+
+            NoOutline = rows.Where(s => s.StartsWith("noOutline()")).Count() > 0;
+
+            int[] color = rows.Where(s => s.StartsWith("c(")).Count()>0 ? rows.Where(s => s.StartsWith("c(")).First().Split('(',')')[1].Split(',').Select(s => int.Parse(s)).ToArray() : new int[3];
+            Color = Color.FromArgb(color[0],color[1],color[2]);
+
+            PolyPoints = rows.Where(line => line.StartsWith("p(")).Select( p => p.Split('(',')')[1].Split(',').Select(i => int.Parse(i)).ToArray() ).ToList();
         }
     }
 }

@@ -25,43 +25,23 @@ namespace NFMCodeRefiner {
         public int Health { get; set; } // last value, appears to be the health, but I'm not sure (minimum 1, maximum unknown)
 
         public Physics(string row) {
-            if(row.StartsWith("physics(")) {
-                string[] physics = row.Split('(', ')')[1].Split(',');
-                Handbrake = Int32.Parse(physics[0]);
-                TurningSens = Int32.Parse(physics[1]);
-                TireGrip = Int32.Parse(physics[2]);
-                Bouncing = Int32.Parse(physics[3]);
-                Unknown1 = Int32.Parse(physics[4]);
-                LiftsOthers = Int32.Parse(physics[5]);
-                GetsLifted = Int32.Parse(physics[6]);
-                PushesOthers = Int32.Parse(physics[7]);
-                GetsPushed = Int32.Parse(physics[8]);
-                AerialRotationSpeed = Int32.Parse(physics[9]);
-                AerialControlGliding = Int32.Parse(physics[10]);
-                CrashRadius = Int32.Parse(physics[11]);
-                CrashMagnitude = Int32.Parse(physics[12]);
-                RoofDestruiction = Int32.Parse(physics[13]);
-                EngineType = Int32.Parse(physics[14]);
-                Health = Int32.Parse(physics[15]);
-            }
-            else { // example fill up if input isn't correct
-                Handbrake = 100;
-                TurningSens = 100;
-                TireGrip = 100;
-                Bouncing = 22;
-                Unknown1 = 50;
-                LiftsOthers = 0;
-                GetsLifted = 0;
-                PushesOthers = 0;
-                GetsPushed = 0;
-                AerialRotationSpeed = 78;
-                AerialControlGliding = 100;
-                CrashRadius = 636;
-                CrashMagnitude = 6;
-                RoofDestruiction = 0;
-                EngineType = 1;
-                Health = 39461;
-            }
+            int[] physics = row.StartsWith("physics(") ? row.Split('(',')')[1].Split(',').Select(s => int.Parse(s)).ToArray() : new int[16]{100,100,100,22,50,0,0,0,0,78,100,626,6,0,1,39461};
+            Handbrake = physics[0];
+            TurningSens = physics[1];
+            TireGrip = physics[2];
+            Bouncing = physics[3];
+            Unknown1 = physics[4];
+            LiftsOthers = physics[5];
+            GetsLifted = physics[6];
+            PushesOthers = physics[7];
+            GetsPushed = physics[8];
+            AerialRotationSpeed = physics[9];
+            AerialControlGliding = physics[10];
+            CrashRadius = physics[11];
+            CrashMagnitude = physics[12];
+            RoofDestruiction = physics[13];
+            EngineType = physics[14];
+            Health = physics[15];
         }
     }
 }

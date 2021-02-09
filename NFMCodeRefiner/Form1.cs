@@ -20,7 +20,7 @@ namespace NFMCodeRefiner
             // 10 hours wasted from my life, for a game no one's playing, but honestly, I don't care...
         }
 
-        static void Testing() {
+        public void Testing() {
             // get the car code processed
             List<string> raw = new List<string>();
             foreach(string line in File.ReadAllLines("testcar.rad")) {
@@ -52,7 +52,7 @@ namespace NFMCodeRefiner
             // polys
             foreach(Polygon item in car.Polygons) {
                 wr.WriteLine("\n<p>");
-                wr.WriteLine($"c({item.PolyColor.R},{item.PolyColor.G},{item.PolyColor.B})");
+                wr.WriteLine($"c({item.Color.R},{item.Color.G},{item.Color.B})");
                 foreach(int[] points in item.PolyPoints) {
                     wr.WriteLine($"p({points[0]},{points[1]},{points[2]})");
                 }
@@ -90,6 +90,16 @@ namespace NFMCodeRefiner
             wr.WriteLine($"//Endurance:   {car.StatsAndClass.Endurance}");
             wr.WriteLine($"//Class:   {car.StatsAndClass.GetClass}");
             wr.Close();
+
+            // DATAGRID TEST
+            statusPoly.Text = "Polygons: "+car.Polygons.Count()+"/210";
+            for(int c=0; c<car.Polygons.Count(); c++) {
+                string points = string.Join("", car.Polygons.ElementAt(c).PolyPoints.SelectMany(s => $"({s[0]},{s[1]},{s[2]}) ") );
+                string color = $"{car.Polygons.ElementAt(c).Color.R},{car.Polygons.ElementAt(c).Color.G},{car.Polygons.ElementAt(c).Color.B}";
+                string fs = car.Polygons.ElementAt(c).HasFs ? car.Polygons.ElementAt(c).Fs.ToString() : "";
+                string gr = car.Polygons.ElementAt(c).HasGr ? car.Polygons.ElementAt(c).Gr.ToString() : "";
+                polyGrid.Rows.Add(c+1,points,color,fs,gr);
+            }
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e) {

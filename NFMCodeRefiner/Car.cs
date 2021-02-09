@@ -100,5 +100,12 @@ namespace NFMCodeRefiner {
             }
             Polygons = polygons;
         }
+
+        public void Import() {
+            
+        }
+        public void Export() {
+            
+        }
     }
 }
